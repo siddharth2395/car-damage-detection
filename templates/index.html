@@ -10,24 +10,24 @@
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
     <style>
-          body, html {
-          color:#000;
-    height: 100%;
-}
+        body, html {
+            color:#000;
+            height: 100%;
+        }
 
-.bg {
-    /* The image used */
-    background-image: url("{{url_for('static', filename='img/back.jpg')}}");
+        .bg {
+            /* The image used */
+            background-image: url("{{url_for('static', filename='img/back.jpg')}}");
 
-    /* Full height */
-    height: 100%;
+            /* Full height */
+            height: 100%;
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-</style>
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
 </head>
 <body class="bg">
 <!-- Just an image -->
@@ -36,19 +36,18 @@
         <img src="{{ url_for('static', filename='img/mlogo.png') }}" alt="">
     </a>
 </nav>
-<div class="container" style="background:white;border:3px solid #ccc;padding:20px;margin-top:50px;border-radius:20px;">
+<div class="container" style="background:white;border:3px solid #ccc;padding:5px;border-radius:10px;">
     <div class="row">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8 text-center"><h1>Damage detection in car with AI.</h1></div>
+        <div class="col-lg-8 text-center"><h2>Damage detection in car with AI.</h2></div>
         <div class="col-lg-2"></div>
 
     </div>
-    <form action="upload" method="post" enctype="multipart/form-data">
-
-        <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <div class="row" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+            <form action="upload" method="post" enctype="multipart/form-data">
+                <div class="row" style="margin-top:15px;">
                     <div class="col-lg-8"><label class="btn btn-dark text-center" style="width:100%;">
                         <span>Browse Image</span><input type="file" name="file" hidden>
                     </label></div>
@@ -56,28 +55,88 @@
                         <span>Find Damage</span><input type="submit" hidden>
                     </label></div>
                 </div>
-                {% if filename%}
-
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="row">
-                            <img src="{{filename}}"
-                                 alt="Mountain View"
-                                 style="max-height:300px;display: block; margin-left: auto; margin-right: auto;margin-top: 40px;">
-                        </div>
-                        <div class="row" style="margin-top:15px;">
-                            <div class="col-lg-12 text-center"><h3>{{damage_level}}({{Confidence}}%)</h3></div>
-                        </div>
-                    </div>
+            </form>
+        </div>
+        <div class="col-lg-4"></div>
+    </div>
+    {% if unknown%}
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="col-lg-12 text-center">
+                <div class="row" style="border-bottom: 2px dotted #aaa;padding-bottom: 20px;">
+                    <img src="{{filename}}"
+                         alt="Mountain View"
+                         style="max-height:300px;display: block; margin-left: auto; margin-right: auto;margin-top: 20px;">
                 </div>
-                {% endif %}
-
+                <div class="row" style="margin-top: 16px;">
+                    <div class="col-lg-12 text-center" style="color:#555;"><h6>This is not a car.</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Confidence</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{Confidence}}%</h6></div>
+                </div>
             </div>
         </div>
-    </form>
-    <div class="col-lg-4"></div>
-
-</div>
+        <div class="col-lg-3"></div>
+    </div>
+    {% endif %}
+    {% if known%}
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div class="col-lg-12 text-center">
+                <div class="row" style="border-bottom: 2px dotted #aaa;padding-bottom: 20px;">
+                    <img src="{{filename}}"
+                         alt="Mountain View"
+                         style="max-height:300px;display: block; margin-left: auto; margin-right: auto;margin-top: 20px;">
+                </div>
+                <div class="row" style="margin-top: 16px;">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Damage Location</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{damage_location}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Damage Severity</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#{{color_code}};"><h6>{{damage_level}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Make</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{make}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Model</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{model}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Insurance Policy Number</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{policy_number}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Car Registration</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{car_registration}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Estimated repair cost</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{cost}}</h6></div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-5 text-left" style="color:#555;"><h6>Confidence</h6></div>
+                    <div class="col-lg-2 text-center" style="color:#555;"><h6>:</h6></div>
+                    <div class="col-lg-5 text-right" style="color:#555;"><h6>{{Confidence}}%</h6></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    {% endif %}
 </div>
 
 <!-- Optional JavaScript -->
